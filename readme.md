@@ -33,7 +33,7 @@ mv upclean /usr/local/bin/upclean
 ```
 $ upclean --help
 
-UpClean 1.1.0 🧼 upclean.app
+UpClean 1.2.0 🧼 upclean.app
 
 An update and cleanup script for macOS.
 
