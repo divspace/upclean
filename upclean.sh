@@ -6,6 +6,8 @@ VERSION=1.0.0
 # UpClean v1.0.0 (https://upclean.app) — An update and cleanup script for macOS.
 # ------------------------------------------------------------------------------
 
+soap=🧼
+
 bold="\033[1m"
 cyan="\033[0;36m"
 green="\033[0;32m"
@@ -24,7 +26,7 @@ shouldUpdateMas=true
 # ------------------------------------------------------------------------------
 
 function usage() {
-    printf "UpClean %b%s%b 🧼 %bupclean.app%b\n\n" "$green" "$VERSION" "$reset" "$cyan" "$reset"
+    printf "UpClean %b%s%b %s %bupclean.app%b\n\n" "$green" "$VERSION" "$reset" "$soap" "$cyan" "$reset"
     printf "An update and cleanup script for macOS.\n\n"
     printf "%bUsage:%b\n" "$yellow" "$reset"
     printf -- "  upclean [options]\n\n"
@@ -70,6 +72,37 @@ function keepSudoAlive() {
         sudo -n true
         kill -0 "$$" || exit
     done 2>/dev/null &
+}
+
+# ------------------------------------------------------------------------------
+# Disk Space Functions...
+# ------------------------------------------------------------------------------
+
+function getDiskSpaceUsed() {
+    df -k / | tail -n1 | awk '{ print $3 }'
+}
+
+function calculateDiskSpaceSavings() {
+    if [[ -n $diskSpaceUsedBefore ]] && [[ -n $diskSpaceUsedAfter ]]; then
+        local diskSpaceDifference
+
+        (( diskSpaceDifference=diskSpaceUsedBefore - diskSpaceUsedAfter ))
+
+        if [[ $diskSpaceDifference -gt 0 ]] && [[ $diskSpaceDifference -lt 10000 ]]; then
+            unit=MB
+            diskSpaceSaved=$(echo "$diskSpaceDifference" | awk '{ print $1=$1/1024 }')
+        fi
+
+        if [[ $diskSpaceDifference -ge 10000 ]]; then
+            unit=GB
+            diskSpaceSaved=$(echo "$diskSpaceDifference" | awk '{ print $1=$1/1024^2 }')
+        fi
+    fi
+}
+
+function showDiskSpaceSavings() {
+    [[ -n $diskSpaceSaved ]] && LC_NUMERIC=en_US printf "\n%b%s Cleaned up %b%'.f %s%b of disk space!%b\n" \
+        "$bold" "$soap" "$cyan$bold" "$diskSpaceSaved" "$unit" "$reset$bold" "$reset"
 }
 
 # ------------------------------------------------------------------------------
@@ -256,6 +289,8 @@ function flushDns() {
 # ------------------------------------------------------------------------------
 
 function initializeCleanup() {
+    diskSpaceUsedBefore=$(getDiskSpaceUsed)
+
     cleanAdobe
     cleanComposer
     cleanDocker
@@ -271,6 +306,10 @@ function initializeCleanup() {
     cleanYarn
 
     emptyTrash
+
+    diskSpaceUsedAfter=$(getDiskSpaceUsed)
+
+    calculateDiskSpaceSavings
 }
 
 function initializeUpdate() {
@@ -312,5 +351,6 @@ while [[ $# -gt 0 ]]; do
 done
 
 handleOptions
+showDiskSpaceSavings
 
 exit 0
