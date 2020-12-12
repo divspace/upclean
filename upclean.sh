@@ -11,6 +11,7 @@ soap=🧼
 bold="\033[1m"
 cyan="\033[0;36m"
 green="\033[0;32m"
+red="\033[41m"
 yellow="\033[33m"
 reset="\033[0m"
 
@@ -58,9 +59,11 @@ function info() {
     shift
 
     if [[ -n $action ]] && [[ -n $message ]]; then
-        printf "%b%s %b%s%b..." "$yellow" "$action" "$bold" "$message" "$reset"
+        message=$(printf "%b%s %b%s%b..." "$yellow" "$action" "$bold" "$message" "$reset")
+
+        startSpinner "$message"
     else
-        printf "%bdone!%b\n" "$green" "$reset"
+        stopSpinner $?
     fi
 }
 
@@ -72,6 +75,50 @@ function keepSudoAlive() {
         sudo -n true
         kill -0 "$$" || exit
     done 2>/dev/null &
+}
+
+# ------------------------------------------------------------------------------
+# Spinner Functions...
+# ------------------------------------------------------------------------------
+
+function spinner() {
+    case $1 in
+        "start")
+            (( column=60 - ${#2} ))
+            printf "%s%${column}s" "$2"
+
+            i=1
+            delay=0.13
+            frames="-\|/"
+
+            while true; do
+                printf "\b%s" ${frames:i++%${#frames}:1}
+                sleep "$delay"
+            done
+            ;;
+        "stop")
+            [[ -z $3 ]] && fail "Spinner is not running!"
+
+            kill "$3" > /dev/null 2>&1
+
+            if [[ $2 -eq 1 ]]; then
+                printf "\b%b✓%b\n" "${green}" "${reset}"
+            else
+                printf "\b%b𐊴%b\n" "${red}" "${reset}"
+            fi
+            ;;
+    esac
+}
+
+function startSpinner() {
+    spinner "start" "$1" &
+    spinnerProcessId=$!
+    disown
+}
+
+function stopSpinner() {
+    spinner "stop" "$1" "$spinnerProcessId"
+    unset spinnerProcessId
 }
 
 # ------------------------------------------------------------------------------
