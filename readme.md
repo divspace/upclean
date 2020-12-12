@@ -44,7 +44,7 @@ curl -fsSL "https://raw.githubusercontent.com/divspace/upclean/master/installer.
 ```
 $ upclean --help
 
-UpClean 1.0.0 🧼 upclean.app
+UpClean 1.1.0 🧼 upclean.app
 
 An update and cleanup script for macOS.
 
