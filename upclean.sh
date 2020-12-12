@@ -59,7 +59,7 @@ function info() {
     shift
 
     if [[ -n $action ]] && [[ -n $message ]]; then
-        message=$(printf "%b%s %b%s%b..." "$yellow" "$action" "$bold" "$message" "$reset")
+        message=$(printf "%s %b%s%b..." "$action" "$bold" "$message" "$reset")
 
         startSpinner "$message"
     else
