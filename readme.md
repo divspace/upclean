@@ -3,9 +3,10 @@
 An update and cleanup script for macOS.
 
 - [Installation](#installation)
+- [Usage](#usage)
+- [Configuration](#configuration)
 - [Update](#update)
 - [Uninstall](#uninstall)
-- [Usage](#usage)
 
 ![Screenshot](./screenshot.png)
 
@@ -25,18 +26,6 @@ sh -c "$(wget https://raw.githubusercontent.com/divspace/upclean/master/installe
 curl -o upclean https://raw.githubusercontent.com/divspace/upclean/master/upclean.sh
 chmod +x upclean
 mv upclean /usr/local/bin/upclean
-```
-
-## Update
-
-```bash
-curl -fsSL "https://raw.githubusercontent.com/divspace/upclean/master/installer.sh" | bash -s update
-```
-
-## Uninstall
-
-```bash
-curl -fsSL "https://raw.githubusercontent.com/divspace/upclean/master/installer.sh" | bash -s uninstall
 ```
 
 ## Usage
@@ -61,4 +50,28 @@ Options:
       --skip-memory              Skip clearing inactive memory
       --skip-update              Skip updating
   -h, --help                     Display this help message
+```
+
+## Configuration
+
+You can configure the [runtime options](#usage) by adding them to the `.upcleanrc` file in your home directory:
+
+```bash
+# File: ~/.upcleanrc
+--skip-dns
+--skip-memory
+```
+
+Passing options directly will override any configuration options that you may have set.
+
+## Update
+
+```bash
+curl -fsSL "https://raw.githubusercontent.com/divspace/upclean/master/installer.sh" | bash -s update
+```
+
+## Uninstall
+
+```bash
+curl -fsSL "https://raw.githubusercontent.com/divspace/upclean/master/installer.sh" | bash -s uninstall
 ```

@@ -15,6 +15,8 @@ red="\033[41m"
 yellow="\033[33m"
 reset="\033[0m"
 
+configFile=~/.upcleanrc
+
 shouldClean=true
 shouldClearMemory=true
 shouldFlushDns=true
@@ -75,6 +77,24 @@ function keepSudoAlive() {
         sudo -n true
         kill -0 "$$" || exit
     done 2>/dev/null &
+}
+
+# ------------------------------------------------------------------------------
+# Configuration Functions...
+# ------------------------------------------------------------------------------
+
+function hasConfigFile() {
+    [[ -s $configFile ]] && return
+
+    false
+}
+
+function loadConfigFile() {
+    local configOptions
+
+    IFS=$'\r\n' GLOBIGNORE="*" command eval "configOptions=($(cat $configFile))"
+
+    checkOptions "${configOptions[@]}"
 }
 
 # ------------------------------------------------------------------------------
@@ -370,6 +390,22 @@ function initializeUpdate() {
 # Options...
 # ------------------------------------------------------------------------------
 
+function checkOptions() {
+    for option in "$@"; do
+        case $option in
+            "--skip-clean") shouldClean=false ;;
+            "--skip-composer") shouldUpdateComposer=false ;;
+            "--skip-composer-packages") shouldUpdateComposerPackages=false ;;
+            "--skip-dns") shouldFlushDns=false ;;
+            "--skip-homebrew") shouldUpdateHomebrew=false ;;
+            "--skip-mas") shouldUpdateMas=false ;;
+            "--skip-memory") shouldClearMemory=false ;;
+            "--skip-update") shouldUpdate=false ;;
+            "-h"|"--help") usage ;;
+        esac
+    done
+}
+
 function handleOptions() {
     $shouldUpdate && initializeUpdate
     $shouldClean && initializeCleanup
@@ -381,22 +417,8 @@ function handleOptions() {
     $shouldFlushDns && flushDns
 }
 
-while [[ $# -gt 0 ]]; do
-    case $1 in
-        "--skip-clean") shouldClean=false ;;
-        "--skip-composer") shouldUpdateComposer=false ;;
-        "--skip-composer-packages") shouldUpdateComposerPackages=false ;;
-        "--skip-dns") shouldFlushDns=false ;;
-        "--skip-homebrew") shouldUpdateHomebrew=false ;;
-        "--skip-mas") shouldUpdateMas=false ;;
-        "--skip-memory") shouldClearMemory=false ;;
-        "--skip-update") shouldUpdate=false ;;
-        *) usage ;;
-    esac
-
-    shift
-done
-
+hasConfigFile && loadConfigFile
+checkOptions "$@"
 handleOptions
 showDiskSpaceSavings
 
