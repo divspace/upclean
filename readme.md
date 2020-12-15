@@ -33,7 +33,7 @@ mv upclean /usr/local/bin/upclean
 ```
 $ upclean --help
 
-UpClean 1.2.0 🧼 upclean.app
+UpClean 1.3.0 🧼 upclean.app
 
 An update and cleanup script for macOS.
 
@@ -45,6 +45,7 @@ Options:
       --skip-composer            Skip updating Composer
       --skip-composer-packages   Skip updating Composer packages
       --skip-dns                 Skip flushing DNS cache
+      --skip-docker              Skip cleaning Docker
       --skip-homebrew            Skip updating Homebrew
       --skip-mas                 Skip updating Mac App Store applications
       --skip-memory              Skip clearing inactive memory

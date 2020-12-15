@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-VERSION=1.2.0
+VERSION=1.3.0
 
 # ------------------------------------------------------------------------------
-# UpClean v1.2.0 (https://upclean.app) — An update and cleanup script for macOS.
+# UpClean v1.3.0 (https://upclean.app) — An update and cleanup script for macOS.
 # ------------------------------------------------------------------------------
 
 soap=🧼
@@ -18,6 +18,7 @@ reset="\033[0m"
 configFile=~/.upcleanrc
 
 shouldClean=true
+shouldCleanDocker=true
 shouldClearMemory=true
 shouldFlushDns=true
 shouldUpdate=true
@@ -38,6 +39,7 @@ function usage() {
     printf -- "%b      --skip-composer            %bSkip updating Composer\n" "$green" "$reset"
     printf -- "%b      --skip-composer-packages   %bSkip updating Composer packages\n" "$green" "$reset"
     printf -- "%b      --skip-dns                 %bSkip flushing DNS cache\n" "$green" "$reset"
+    printf -- "%b      --skip-docker              %bSkip cleaning Docker\n" "$green" "$reset"
     printf -- "%b      --skip-homebrew            %bSkip updating Homebrew\n" "$green" "$reset"
     printf -- "%b      --skip-mas                 %bSkip updating Mac App Store applications\n" "$green" "$reset"
     printf -- "%b      --skip-memory              %bSkip clearing inactive memory\n" "$green" "$reset"
@@ -360,7 +362,7 @@ function initializeCleanup() {
 
     cleanAdobe
     cleanComposer
-    cleanDocker
+    $shouldCleanDocker && cleanDocker
     cleanDropbox
     cleanGoogleChrome
     cleanGoogleDrive
@@ -397,6 +399,7 @@ function checkOptions() {
             "--skip-composer") shouldUpdateComposer=false ;;
             "--skip-composer-packages") shouldUpdateComposerPackages=false ;;
             "--skip-dns") shouldFlushDns=false ;;
+            "--skip-docker") shouldCleanDocker=false ;;
             "--skip-homebrew") shouldUpdateHomebrew=false ;;
             "--skip-mas") shouldUpdateMas=false ;;
             "--skip-memory") shouldClearMemory=false ;;
