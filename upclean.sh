@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
 
-VERSION=1.3.0
+VERSION=1.3.1
 
 # ------------------------------------------------------------------------------
-# UpClean v1.3.0 (https://upclean.app) — An update and cleanup script for macOS.
+# UpClean v1.3.1 (https://upclean.app) — An update and cleanup script for macOS.
 # ------------------------------------------------------------------------------
 
 soap=🧼
@@ -395,6 +395,7 @@ function initializeUpdate() {
 function checkOptions() {
     for option in "$@"; do
         case $option in
+            "-h"|"--help") usage ;;
             "--skip-clean") shouldClean=false ;;
             "--skip-composer") shouldUpdateComposer=false ;;
             "--skip-composer-packages") shouldUpdateComposerPackages=false ;;
@@ -404,7 +405,6 @@ function checkOptions() {
             "--skip-mas") shouldUpdateMas=false ;;
             "--skip-memory") shouldClearMemory=false ;;
             "--skip-update") shouldUpdate=false ;;
-            "-h"|"--help") usage ;;
         esac
     done
 }
