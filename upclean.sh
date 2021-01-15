@@ -147,15 +147,15 @@ function stopSpinner() {
 # Disk Space Functions...
 # ------------------------------------------------------------------------------
 
-function getDiskSpaceUsed() {
-    df -k / | tail -n1 | awk '{ print $3 }'
+function getAvailableDiskSpace() {
+    df -k / | tail -n1 | awk '{ print $4 }'
 }
 
 function calculateDiskSpaceSavings() {
-    if [[ -n $diskSpaceUsedBefore ]] && [[ -n $diskSpaceUsedAfter ]]; then
+    if [[ -n $availableDiskSpaceBefore ]] && [[ -n $availableDiskSpaceAfter ]]; then
         local diskSpaceDifference
 
-        (( diskSpaceDifference=diskSpaceUsedBefore - diskSpaceUsedAfter ))
+        (( diskSpaceDifference=availableDiskSpaceAfter - availableDiskSpaceBefore ))
 
         if [[ $diskSpaceDifference -gt 0 ]] && [[ $diskSpaceDifference -lt 10000 ]]; then
             unit=MB
@@ -358,7 +358,7 @@ function flushDns() {
 # ------------------------------------------------------------------------------
 
 function initializeCleanup() {
-    diskSpaceUsedBefore=$(getDiskSpaceUsed)
+    availableDiskSpaceBefore=$(getAvailableDiskSpace)
 
     cleanAdobe
     cleanComposer
@@ -376,7 +376,7 @@ function initializeCleanup() {
 
     emptyTrash
 
-    diskSpaceUsedAfter=$(getDiskSpaceUsed)
+    availableDiskSpaceAfter=$(getAvailableDiskSpace)
 
     calculateDiskSpaceSavings
 }
