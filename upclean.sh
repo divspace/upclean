@@ -25,6 +25,7 @@ shouldUpdate=true
 shouldUpdateComposer=true
 shouldUpdateComposerPackages=true
 shouldUpdateHomebrew=true
+shouldUpdateHomebrewPackages=true
 shouldUpdateMas=true
 
 # ------------------------------------------------------------------------------
@@ -41,6 +42,7 @@ function usage() {
     printf -- "%b      --skip-dns                 %bSkip flushing DNS cache\n" "$green" "$reset"
     printf -- "%b      --skip-docker              %bSkip cleaning Docker\n" "$green" "$reset"
     printf -- "%b      --skip-homebrew            %bSkip updating Homebrew\n" "$green" "$reset"
+    printf -- "%b      --skip-homebrew-packages   %bSkip updating Homebrew packages\n" "$green" "$reset"
     printf -- "%b      --skip-mas                 %bSkip updating Mac App Store applications\n" "$green" "$reset"
     printf -- "%b      --skip-memory              %bSkip clearing inactive memory\n" "$green" "$reset"
     printf -- "%b      --skip-update              %bSkip updating\n" "$green" "$reset"
@@ -321,6 +323,19 @@ function updateHomebrew() {
     fi
 }
 
+function updateHomebrewPackages() {
+    if type "brew" &>/dev/null; then
+        outdatedPackages=$(brew outdated | awk '{ print $1 }')
+        if [[ -n $outdatedPackages ]]; then
+            info "update" "Homebrew packages"
+            for package in $outdatedPackages; do
+                brew upgrade "$package" &>/dev/null
+            done
+            info "done"
+        fi
+    fi
+}
+
 function updateMacAppStore() {
     if type "mas" &>/dev/null && [[ -n $(mas outdated) ]]; then
         info "update" "Mac App Store"
@@ -385,6 +400,7 @@ function initializeUpdate() {
     $shouldUpdateComposer && updateComposer
     $shouldUpdateComposerPackages && updateComposerPackages
     $shouldUpdateHomebrew && updateHomebrew
+    $shouldUpdateHomebrewPackages && updateHomebrewPackages
     $shouldUpdateMas && updateMacAppStore
 }
 
@@ -402,6 +418,7 @@ function checkOptions() {
             "--skip-dns") shouldFlushDns=false ;;
             "--skip-docker") shouldCleanDocker=false ;;
             "--skip-homebrew") shouldUpdateHomebrew=false ;;
+            "--skip-homebrew-packages") shouldUpdateHomebrewPackages=false ;;
             "--skip-mas") shouldUpdateMas=false ;;
             "--skip-memory") shouldClearMemory=false ;;
             "--skip-update") shouldUpdate=false ;;
