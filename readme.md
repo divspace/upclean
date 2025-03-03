@@ -47,6 +47,7 @@ Options:
       --skip-dns                 Skip flushing DNS cache
       --skip-docker              Skip cleaning Docker
       --skip-homebrew            Skip updating Homebrew
+      --skip-homebrew-packages   Skip updating Homebrew packages
       --skip-mas                 Skip updating Mac App Store applications
       --skip-memory              Skip clearing inactive memory
       --skip-update              Skip updating
