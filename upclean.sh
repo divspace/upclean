@@ -325,7 +325,7 @@ function updateHomebrew() {
 
 function updateHomebrewPackages() {
     if type "brew" &>/dev/null; then
-        outdatedPackages=$(brew outdated | awk '{ print $1 }')
+        outdatedPackages=$(brew outdated --greedy | awk '{ print $1 }')
         if [[ -n $outdatedPackages ]]; then
             info "update" "Homebrew packages"
             for package in $outdatedPackages; do
