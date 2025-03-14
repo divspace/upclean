@@ -25,7 +25,7 @@ sh -c "$(wget https://raw.githubusercontent.com/divspace/upclean/master/installe
 ```bash
 curl -o upclean https://raw.githubusercontent.com/divspace/upclean/master/upclean.sh
 chmod +x upclean
-mv upclean /usr/local/bin/upclean
+sudo mv -f upclean /usr/local/bin/upclean
 ```
 
 ## Usage

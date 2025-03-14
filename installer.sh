@@ -19,13 +19,13 @@ info() {
 install() {
     curl -o upclean https://raw.githubusercontent.com/divspace/upclean/master/upclean.sh
     chmod +x upclean
-    mv -f upclean /usr/local/bin/upclean
+    sudo mv -f upclean /usr/local/bin/upclean
     touch ~/.upcleanrc
     info "$1"
 }
 
 uninstall() {
-    rm -f /usr/local/bin/upclean ~/.upcleanrc
+    sudo rm -f /usr/local/bin/upclean ~/.upcleanrc
     info "uninstalled"
 }
 
