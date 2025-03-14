@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 
-VERSION=1.6.0
+VERSION=1.6.1
 
 # ------------------------------------------------------------------------------
-# UpClean v1.6.0 (https://upclean.app) — An update and cleanup script for macOS.
+# UpClean v1.6.1 (https://upclean.app) — An update and cleanup script for macOS.
 # ------------------------------------------------------------------------------
 
 green="\033[0;32m"

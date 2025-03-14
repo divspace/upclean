@@ -33,7 +33,7 @@ sudo mv -f upclean /usr/local/bin/upclean
 ```
 $ upclean --help
 
-UpClean 1.6.0 🧼 upclean.app
+UpClean 1.6.1 🧼 upclean.app
 
 An update and cleanup script for macOS.
 
