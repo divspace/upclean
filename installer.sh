@@ -1,9 +1,9 @@
 #!/usr/bin/env sh
 
-VERSION=1.6.1
+VERSION=1.6.2
 
 # ------------------------------------------------------------------------------
-# UpClean v1.6.1 (https://upclean.app) — An update and cleanup script for macOS.
+# UpClean v1.6.2 (https://upclean.app) — An update and cleanup script for macOS.
 # ------------------------------------------------------------------------------
 
 green="\033[0;32m"
@@ -19,6 +19,7 @@ info() {
 install() {
     curl -o upclean https://raw.githubusercontent.com/divspace/upclean/master/upclean.sh
     chmod +x upclean
+    mkdir -p /usr/local/bin
     sudo mv -f upclean /usr/local/bin/upclean
     touch ~/.upcleanrc
     info "$1"

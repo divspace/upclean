@@ -25,6 +25,7 @@ sh -c "$(wget https://raw.githubusercontent.com/divspace/upclean/master/installe
 ```bash
 curl -o upclean https://raw.githubusercontent.com/divspace/upclean/master/upclean.sh
 chmod +x upclean
+mkdir -p /usr/local/bin
 sudo mv -f upclean /usr/local/bin/upclean
 ```
 
@@ -33,7 +34,7 @@ sudo mv -f upclean /usr/local/bin/upclean
 ```
 $ upclean --help
 
-UpClean 1.6.1 🧼 upclean.app
+UpClean 1.6.2 🧼 upclean.app
 
 An update and cleanup script for macOS.
 
